@@ -54,13 +54,11 @@ CharacterStats.prototype.takeDamage = function() {
 */
 
 function Humanoid(attr) {
-	GameObject.call(this, attr);
 	CharacterStats.call(this, attr);
 	this.team = attr.team;
 	this.weapons = attr.weapons;
 	this.language = attr.language;
 }
-Humanoid.prototype = Object.create(GameObject.prototype);
 Humanoid.prototype = Object.create(CharacterStats.prototype);
 Humanoid.prototype.greet = function() {
 	return `${this.name} offers a greeting in ${this.language}.`;
@@ -131,3 +129,65 @@ console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.
 // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
 // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+function Villain(attr) {
+	Humanoid.call(this, attr);
+}
+Villain.prototype = Object.create(Humanoid.prototype);
+
+Villain.prototype.attack = function() {
+	console.log(firstHero.takeDamage());
+	if (firstHero.healthPoints > 5) {
+		firstHero.healthPoints -= 5;
+		return `${this.name} used ${this.weapons}`;
+	} else {
+		return firstHero.destroy();
+	}
+};
+
+function Hero(attr) {
+	Humanoid.call(this, attr);
+}
+Hero.prototype = Object.create(Humanoid.prototype);
+
+Hero.prototype.attack = function() {
+	console.log(firstVillain.takeDamage());
+	if (firstVillain.healthPoints > 5) {
+		firstVillain.healthPoints -= 5;
+		return `${this.name} used ${this.weapons}`;
+	} else {
+		return firstVillain.destroy();
+	}
+};
+
+const firstVillain = new Villain({
+	createdAt: new Date(),
+	dimensions: {
+		length: 2,
+		width: 2,
+		height: 2
+	},
+	healthPoints: 10,
+	name: 'Mr. Bad',
+	team: 'Villains Team',
+	weapons: [ 'Giant Sword' ],
+	language: 'Common Tongue'
+});
+
+const firstHero = new Hero({
+	createdAt: new Date(),
+	dimensions: {
+		length: 2,
+		width: 2,
+		height: 2
+	},
+	healthPoints: 20,
+	name: 'Mr. Good',
+	team: 'Heros Team',
+	weapons: [ 'Giant Sword', 'Shield' ],
+	language: 'Common Tongue'
+});
+
+console.log(firstHero.attack());
+console.log(firstVillain.attack());
+console.log(firstHero.attack());
