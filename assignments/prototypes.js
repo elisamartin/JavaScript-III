@@ -136,10 +136,11 @@ function Villain(attr) {
 Villain.prototype = Object.create(Humanoid.prototype);
 
 Villain.prototype.attack = function() {
-	console.log(firstHero.takeDamage());
 	if (firstHero.healthPoints > 5) {
 		firstHero.healthPoints -= 5;
-		return `${this.name} used ${this.weapons}`;
+
+		console.log(`${this.name} used ${this.weapons}`);
+		return firstHero.takeDamage();
 	} else {
 		return firstHero.destroy();
 	}
@@ -151,10 +152,10 @@ function Hero(attr) {
 Hero.prototype = Object.create(Humanoid.prototype);
 
 Hero.prototype.attack = function() {
-	console.log(firstVillain.takeDamage());
 	if (firstVillain.healthPoints > 5) {
 		firstVillain.healthPoints -= 5;
-		return `${this.name} used ${this.weapons}`;
+		console.log(`${this.name} used ${this.weapons}`);
+		return firstVillain.takeDamage();
 	} else {
 		return firstVillain.destroy();
 	}
